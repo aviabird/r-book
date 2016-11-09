@@ -8,9 +8,9 @@
     <h1>{{selectedRecipe?.name}}</h1>
   </div>
   <div class="col-xs-12 btn-group">
-    <button class="btn btn-success">To Shopping List</button>
-    <button class="btn btn-primary">Edit</button>
-    <button class="btn btn-danger">Delete</button>
+    <button class="btn btn-success" (click)="onAddToShoppingList()">To Shopping List</button>
+    <button class="btn btn-primary" (click)="onEdit()">Edit</button>
+    <button class="btn btn-danger" (click)="onDelete()">Delete</button>
   </div>
 </div>
 <hr>
@@ -21,6 +21,10 @@
 </div>
 <div class="row">
   <div class="col-xs-12">
-    Ingredients
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let item of selectedRecipe?.ingredients">
+        {{item.name}} ({{item.amount}})
+      </li>
+    </ul>
   </div>
 </div>

@@ -5,7 +5,7 @@ import { Recipe } from '../../recipe'
   selector: 'rb-recipe-item',
   templateUrl: './recipe-item.component.html',
   styleUrls: ['./recipe-item.component.css'],
-  inputs: ['recipe']
+  inputs: ['recipe', 'recipeId']
 })
 export class RecipeItemComponent implements OnInit {
   recipe: Recipe;
