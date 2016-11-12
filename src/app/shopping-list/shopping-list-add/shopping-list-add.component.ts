@@ -1,6 +1,6 @@
 import { ShoppingListService } from './../shopping-list.service';
-import { Ingredient } from './../../shared/ingredient';
 import { Component, OnChanges, EventEmitter } from '@angular/core';
+import { Ingredient } from '../../models/ingredient';
 
 @Component({
   selector: 'rb-shopping-list-add',

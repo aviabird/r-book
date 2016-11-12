@@ -1,14 +1,15 @@
 import { RecipeService } from './../../recipe.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Recipe } from '../../recipe'
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ShoppingListService } from '../../../shopping-list/shopping-list.service'
 import { Subscription } from 'rxjs/rx'
+import { Recipe } from '../../../models/recipe';
 
 @Component({
   selector: 'rb-recipe-detail',
   templateUrl: './recipe-detail.component.html',
-  styleUrls: ['./recipe-detail.component.css']
+  styleUrls: ['./recipe-detail.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecipeDetailComponent implements OnInit, OnDestroy {
   selectedRecipe: Recipe;

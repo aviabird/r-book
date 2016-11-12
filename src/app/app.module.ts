@@ -2,6 +2,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import {Store, StoreModule} from '@ngrx/store';
+import reducers from './reducers/reducers';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import { StoreLogMonitorModule, useLogMonitor } from '@ngrx/store-log-monitor';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -38,7 +42,15 @@ import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component
     HttpModule,
     AlertModule,
     AppRoutes,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.provideStore(reducers),
+    StoreDevtoolsModule.instrumentStore({
+      monitor: useLogMonitor({
+        visible: true,
+        position: 'right'
+      })
+    }),
+    StoreLogMonitorModule
   ],
   providers: [ShoppingListService],
   bootstrap: [AppComponent]

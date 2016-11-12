@@ -1,40 +1,43 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { Recipe } from './recipe';
-import { Ingredient } from '../shared/ingredient'
 import { Headers, Http, Response } from '@angular/http';
+import { Recipe } from '../models/recipe';
+import { Ingredient } from '../models/ingredient';
+import { Store } from '@ngrx/store';
+import { AppState } from '../reducers/reducers';
+import { RecipeActions } from '../actions/recipe';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class RecipeService {
   recipesChanged = new EventEmitter<Recipe[]>();
 
-  private recipes: Recipe[] = [
-    new Recipe('Three Layered Rice', 'Three Layered Rice', 'http://www.ndtv.com/cooks/images/three-layered-rice_article.jpg', [
-      new Ingredient('French Fries', 2),
-      new Ingredient('Meat', 1)
-    ]),
-    new Recipe('Diet Recipe', 'Diet Recipe', 'http://www.quickdietprogram.com/wp-content/uploads/2011/03/Finding-the-Best-Healthy-Diet-Recipes.jpg', [])
-  ];
+  private recipes = this.store.select<Recipe[]>('recipes');
 
-  constructor(private http: Http) { }
+  constructor(
+    private http: Http,
+    private store: Store<AppState>,
+    private recipeActions: RecipeActions) {}
 
-  getRecipes() {
+  getRecipes(): Observable<Recipe[]> {
     return this.recipes;
   }
 
   getRecipe(id: number) {
-    return this.recipes[id];
+    let recipes: Recipe[] = [];
+    this.store.select<Recipe[]>('recipes').subscribe((_recipes: Recipe[]) => recipes = _recipes);
+    return recipes[id];
   }
 
   deleteRecipe(recipe: Recipe) {
-    this.recipes.splice(this.recipes.indexOf(recipe), 1);
+    return this.store.dispatch(this.recipeActions.deleteRecipeSuccess(recipe));
   }
 
   addRecipe(recipe: Recipe) {
-    this.recipes.push(recipe);
+    return this.store.dispatch(this.recipeActions.addRecipeSuccess(recipe));
   }
 
   editRecipe(oldRecipe: Recipe, newRecipe: Recipe) {
-    this.recipes[this.recipes.indexOf(oldRecipe)] = newRecipe;
+    return this.store.dispatch(this.recipeActions.saveRecipeSuccess(oldRecipe, newRecipe))
   }
 
   storeData() {
@@ -52,8 +55,8 @@ export class RecipeService {
       .map((response: Response) => response.json())
       .subscribe(
         (data: Recipe[]) => {
-          this.recipes = data;
-          this.recipesChanged.emit(this.recipes);
+          this.store.dispatch(this.recipeActions.loadRecipesSuccess(data));
+          this.recipesChanged.emit(data);
         }
       );
   }

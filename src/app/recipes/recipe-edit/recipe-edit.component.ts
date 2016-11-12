@@ -2,13 +2,14 @@ import { FormArray, FormGroup, FormControl, Validators, FormBuilder } from '@ang
 import { Subscription } from 'rxjs/rx';
 import { RecipeService } from './../recipe.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Recipe } from './../recipe';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Recipe } from '../../models/recipe';
 
 @Component({
   selector: 'rb-recipe-edit',
   templateUrl: './recipe-edit.component.html',
-  styles: []
+  styles: [],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecipeEditComponent implements OnInit, OnDestroy {
   recipeForm: FormGroup;
