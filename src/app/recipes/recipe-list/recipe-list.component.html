@@ -8,7 +8,7 @@
   <div class="col-xs-12">
     <ul class="list-group">
       <rb-recipe-item 
-        *ngFor="let recipe of recipes | async; let i = index" 
+        *ngFor="let recipe of recipes$ | async; let i = index" 
         [recipe]="recipe"
         [recipeId]="i"></rb-recipe-item>
     </ul>

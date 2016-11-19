@@ -11,33 +11,19 @@ import { Observable } from 'rxjs/Observable';
 export class RecipeService {
   recipesChanged = new EventEmitter<Recipe[]>();
 
-  private recipes = this.store.select<Recipe[]>('recipes');
+  private recipes: Recipe[] = [];
 
   constructor(
     private http: Http,
     private store: Store<AppState>,
-    private recipeActions: RecipeActions) {}
-
-  getRecipes(): Observable<Recipe[]> {
-    return this.recipes;
+    private recipeActions: RecipeActions
+  ) {
+    this.store.select<Recipe[]>('recipes')
+      .subscribe(recipes => this.recipes = recipes)
   }
 
   getRecipe(id: number) {
-    let recipes: Recipe[] = [];
-    this.store.select<Recipe[]>('recipes').subscribe((_recipes: Recipe[]) => recipes = _recipes);
-    return recipes[id];
-  }
-
-  deleteRecipe(recipe: Recipe) {
-    return this.store.dispatch(this.recipeActions.deleteRecipeSuccess(recipe));
-  }
-
-  addRecipe(recipe: Recipe) {
-    return this.store.dispatch(this.recipeActions.addRecipeSuccess(recipe));
-  }
-
-  editRecipe(oldRecipe: Recipe, newRecipe: Recipe) {
-    return this.store.dispatch(this.recipeActions.saveRecipeSuccess(oldRecipe, newRecipe))
+    return Observable.from([this.recipes[id]])
   }
 
   storeData() {
@@ -50,15 +36,9 @@ export class RecipeService {
     });
   }
 
-  fetchData() {
+  getRecipes() {
     return this.http.get('https://recipebook-927d2.firebaseio.com/recipes.json')
       .map((response: Response) => response.json())
-      .subscribe(
-        (data: Recipe[]) => {
-          this.store.dispatch(this.recipeActions.loadRecipesSuccess(data));
-          this.recipesChanged.emit(data);
-        }
-      );
   }
 
 }

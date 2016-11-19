@@ -4,6 +4,10 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import { ShoppingListService } from '../../../shopping-list/shopping-list.service'
 import { Subscription } from 'rxjs/rx'
 import { Recipe } from '../../../models/recipe';
+import { Observable } from 'rxjs/Observable';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../reducers/reducers';
+import { RecipeActions } from '../../../actions/recipe';
 
 @Component({
   selector: 'rb-recipe-detail',
@@ -12,7 +16,7 @@ import { Recipe } from '../../../models/recipe';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecipeDetailComponent implements OnInit, OnDestroy {
-  selectedRecipe: Recipe;
+  selectedRecipe: Observable<Recipe>;
   private recipeIndex: number = 1;
   private subscription: Subscription;
 
@@ -20,13 +24,18 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
     private sls: ShoppingListService, 
     private router: Router, 
     private route: ActivatedRoute, 
-    private recipesService: RecipeService) { }
+    private recipesService: RecipeService,
+    private store: Store<AppState>,
+    private recipeActions: RecipeActions
+  ) {
+    this.selectedRecipe = this.store.select<Recipe>('recipe');
+  }
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe(
       (params: any) => {
         this.recipeIndex = params['id'];
-        this.selectedRecipe = this.recipesService.getRecipe(this.recipeIndex)
+        this.store.dispatch(this.recipeActions.getRecipe(this.recipeIndex));
       }
     );
   }
@@ -36,12 +45,12 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   }
 
   onDelete() {
-    this.recipesService.deleteRecipe(this.selectedRecipe);
+    this.store.dispatch(this.recipeActions.deleteRecipe(this.recipeIndex));
     this.router.navigate(['/recipes/']);
   }
 
   onAddToShoppingList() {
-    this.sls.addItems(this.selectedRecipe.ingredients)
+    this.sls.addItems(this.selectedRecipe)
   }
 
   ngOnDestroy() {

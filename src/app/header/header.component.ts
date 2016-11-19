@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { RecipeService } from '../recipes/recipe.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../reducers/reducers';
+import { RecipeActions } from '../actions/recipe';
 
 @Component({
   selector: 'rb-header',
@@ -8,7 +11,11 @@ import { RecipeService } from '../recipes/recipe.service';
 })
 export class HeaderComponent {
 
-  constructor(private recipeService: RecipeService) { };
+  constructor(
+    private recipeService: RecipeService,
+    private store: Store<AppState>,
+    private recipeActions: RecipeActions
+  ) { };
 
   onStore() {
     this.recipeService.storeData().subscribe(
@@ -18,7 +25,7 @@ export class HeaderComponent {
   }
 
   onFetch() {
-    this.recipeService.fetchData();
+    this.store.dispatch(this.recipeActions.loadRecipes())
   }
 
 }

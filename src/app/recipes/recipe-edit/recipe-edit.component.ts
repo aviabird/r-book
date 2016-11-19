@@ -4,12 +4,15 @@ import { RecipeService } from './../recipe.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { Recipe } from '../../models/recipe';
+import { Observable } from 'rxjs/Observable';
+import { AppState } from '../../reducers/reducers';
+import { Store } from '@ngrx/store';
+import { RecipeActions } from '../../actions/recipe';
 
 @Component({
   selector: 'rb-recipe-edit',
   templateUrl: './recipe-edit.component.html',
-  styles: [],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styles: []
 })
 export class RecipeEditComponent implements OnInit, OnDestroy {
   recipeForm: FormGroup;
@@ -22,13 +25,20 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private recipeService: RecipeService,
     private formBuilder: FormBuilder,
-    private router: Router) { }
+    private router: Router,
+    private store: Store<AppState>,
+    private recipeActions: RecipeActions
+  ) {
+    this.store.select('recipe').subscribe(
+      (recipe: Recipe) => this.recipe = recipe
+    );
+  }
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe(
       (params: any) => {
         this.recipeIndex = +params['id'];
-        this.recipe = this.recipeService.getRecipe(this.recipeIndex);
+        this.store.dispatch(this.recipeActions.getRecipe(this.recipeIndex));
         if (params.hasOwnProperty('id')) {
           this.isNew = false;
         } else {
@@ -47,9 +57,9 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   onSubmit() {
     const newRecipe = this.recipeForm.value;
     if (this.isNew) {
-      this.recipeService.addRecipe(newRecipe);
+      this.store.dispatch(this.recipeActions.addRecipe(newRecipe));
     } else {
-      this.recipeService.editRecipe(this.recipe, newRecipe);
+      this.store.dispatch(this.recipeActions.saveRecipe(this.recipe, newRecipe));
     }
     this.navigateBack();
   }

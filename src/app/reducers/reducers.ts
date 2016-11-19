@@ -4,11 +4,11 @@ import {compose} from '@ngrx/core/compose';
 import {combineReducers} from '@ngrx/store';
 
 import recipeListReducer, * as fromRecipeList from './recipe-list';
-import recipeReducer, * as fromHero from './recipe';
+import recipeReducer, * as fromRecipe from './recipe';
 
 export interface AppState {
     recipes: fromRecipeList.RecipeListState;
-    recipe: fromHero.RecipeState;
+    recipe: fromRecipe.RecipeState;
 };
 
 //uncomment the storeLogger import and this line
