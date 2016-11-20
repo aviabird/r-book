@@ -17,13 +17,6 @@ export class HeaderComponent {
     private recipeActions: RecipeActions
   ) { };
 
-  onStore() {
-    this.recipeService.storeData().subscribe(
-      data => console.log(data),
-      error => console.log(error)
-    );
-  }
-
   onFetch() {
     this.store.dispatch(this.recipeActions.loadRecipes())
   }

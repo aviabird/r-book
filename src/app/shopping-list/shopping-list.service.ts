@@ -1,29 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Ingredient } from '../models/ingredient';
+import { Store } from '@ngrx/store';
+import { IngredientActions } from '../actions/ingredient';
+import { AppState } from '../reducers/reducers';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ShoppingListService {
-  private items: Ingredient[] =[];
+  private ingredients: Ingredient[] =[];
 
-  constructor() { }
-
-  getItems() {
-    return this.items;
+  constructor(
+    private store: Store<AppState>,
+    private recipeActions: IngredientActions
+  ) {
+    this.store.select<Ingredient[]>('ingredients')
+      .subscribe(ingredients => this.ingredients = ingredients)
   }
 
-  addItems(items: Ingredient[]) {
-    Array.prototype.push.apply(this.items, items);
+  getIngredients() {
+    return Observable.from([this.ingredients]);
   }
 
-  addItem(item: Ingredient) {
-    this.items.push(item);
-  }
-
-  editItem(oldItem: Ingredient, newItem: Ingredient) {
-    this.items[this.items.indexOf(oldItem)] = newItem;
-  }
-
-  deleteItem(item: Ingredient) {
-    this.items.splice(this.items.indexOf(item), 1)
-  }
 }

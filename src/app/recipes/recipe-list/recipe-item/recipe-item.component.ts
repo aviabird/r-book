@@ -9,7 +9,7 @@ import { Recipe } from '../../../models/recipe';
 })
 export class RecipeItemComponent implements OnInit {
   recipe: Recipe;
-  recipeId: Number;
+  recipeId: string;
 
   constructor() { }
 

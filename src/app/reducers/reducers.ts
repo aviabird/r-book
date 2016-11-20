@@ -5,10 +5,14 @@ import {combineReducers} from '@ngrx/store';
 
 import recipeListReducer, * as fromRecipeList from './recipe-list';
 import recipeReducer, * as fromRecipe from './recipe';
+import ingredientReducer, * as fromIngredient from './ingredient';
+import ingredientListReducer, * as fromIngredientList from './ingredient-list';
 
 export interface AppState {
     recipes: fromRecipeList.RecipeListState;
     recipe: fromRecipe.RecipeState;
+    ingredient: fromIngredient.IngredientState;
+    ingredients: fromIngredientList.IngredientListState;
 };
 
 //uncomment the storeLogger import and this line
@@ -19,5 +23,7 @@ export interface AppState {
 //export default compose(storeLogger(), combineReducers)({
 export default compose(combineReducers)({
     recipes: recipeListReducer,
-    recipe: recipeReducer
+    recipe: recipeReducer,
+    ingredient: ingredientReducer,
+    ingredients: ingredientListReducer
 });

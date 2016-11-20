@@ -3,9 +3,9 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'rb-recipe-start',
   template: `
-    <p>
+    <h3 class="text-center">
       Please Select a Recipe
-    </p>
+    </h3>
   `,
   styles: []
 })

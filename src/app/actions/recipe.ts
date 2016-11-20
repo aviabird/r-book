@@ -52,17 +52,17 @@ export class RecipeActions {
         };
     }
     
-    saveRecipe(oldRecipe, newRecipe): Action {
+    saveRecipe(recipes): Action {
         return {
             type: ActionTypes.SAVE_RECIPE,
-            payload: {oldRecipe: oldRecipe, newRecipe: newRecipe}
+            payload: recipes
         };
     }
     
-    saveRecipeSuccess(oldRecipe, newRecipe): Action {
+    saveRecipeSuccess(recipes): Action {
         return {
             type: ActionTypes.SAVE_RECIPE_SUCCESS,
-            payload: {oldRecipe: oldRecipe, newRecipe: newRecipe}
+            payload: recipes
         };
     }
     

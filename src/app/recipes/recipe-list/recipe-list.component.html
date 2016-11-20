@@ -1,16 +1,10 @@
 <div class="row">
   <div class="col-xs-12">
-    <a class="btn btn-success" [routerLink]="['new']"> New Recipe </a>
-    <hr>
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
-    <ul class="list-group">
+    <ul class="list-inline">
       <rb-recipe-item 
-        *ngFor="let recipe of recipes$ | async; let i = index" 
+        *ngFor="let recipe of recipes$ | async" 
         [recipe]="recipe"
-        [recipeId]="i"></rb-recipe-item>
+        [recipeId]="recipe.$key"></rb-recipe-item>
     </ul>
   </div>
 </div>

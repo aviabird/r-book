@@ -17,15 +17,7 @@ export default function (state = initialState, action: Action): RecipeListState 
             return [...state, action.payload];
         }
         case ActionTypes.SAVE_RECIPE_SUCCESS: {
-            let index = state.indexOf(action.payload.oldRecipe);
-            if (index >= 0) {
-                return [
-                    ...state.slice(0, index),
-                    action.payload.newRecipe,
-                    ...state.slice(index + 1)
-                ];
-            }
-            return state;
+            return action.payload
         }
         case ActionTypes.DELETE_RECIPE_SUCCESS: {
             return state.filter((recipe, index) => index != action.payload);

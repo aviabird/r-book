@@ -1,6 +1,9 @@
 import { ShoppingListService } from './../shopping-list.service';
 import { Component, OnChanges, EventEmitter } from '@angular/core';
 import { Ingredient } from '../../models/ingredient';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../reducers/reducers';
+import { IngredientActions } from '../../actions/ingredient';
 
 @Component({
   selector: 'rb-shopping-list-add',
@@ -14,7 +17,15 @@ export class ShoppingListAddComponent implements OnChanges {
   isAdd: boolean = true;
   cleared = new EventEmitter();
 
-  constructor(private sls: ShoppingListService) { }
+  constructor(
+    private sls: ShoppingListService,
+    private store: Store<AppState>,
+    private ingredientActions: IngredientActions
+  ) {
+    this.store.select<Ingredient>('ingredient').subscribe(
+      ingredient => this.item = ingredient
+    );
+  }
 
   ngOnChanges(changes) {
     if (changes.item.currentValue === null) {
@@ -27,15 +38,15 @@ export class ShoppingListAddComponent implements OnChanges {
   onSubmit(ingredient: Ingredient) {
     const newIngredient = new Ingredient(ingredient.name, ingredient.amount);
     if (!this.isAdd) {
-      this.sls.editItem(this.item, newIngredient);
+      this.store.dispatch(this.ingredientActions.saveIngredient(this.item, newIngredient));
     } else {
       this.item = newIngredient
-      this.sls.addItem(this.item)
+      this.store.dispatch(this.ingredientActions.addIngredient(this.item));
     }
   }
 
   onDelete() {
-    this.sls.deleteItem(this.item);
+    this.store.dispatch(this.ingredientActions.deleteIngredient(this.item));
     this.onClear();
   }
 

@@ -3,7 +3,7 @@
     <rb-shopping-list-add [item]="selectedItem" (cleared)="onCleared()"></rb-shopping-list-add>
     <hr>
     <ul class="list-group">
-      <a class="list-group-item" style="..." *ngFor="let item of items" (click)="onSelectItem(item)">
+      <a class="list-group-item" style="..." *ngFor="let item of items | async" (click)="onSelectItem(item)">
         {{item.name}} ({{item.amount}})
       </a>
     </ul>

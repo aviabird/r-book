@@ -1,11 +1,11 @@
-<a [routerLink]="[recipeId]" class="list-group-item clearfix" routerLinkActive="active">
-  <div class="pull-left">
-    <h4 class="list-group-item-heading">{{recipe.name}}</h4>
-    <p class="list-group-item-text">{{recipe.description}}</p>
+<div class="ItemCard" [routerLink]="[recipeId]" routerLinkActive="active">
+  <figure class="ItemCard__thumb">
+      <img [src]="recipe.imagePath" alt="">
+  </figure>
+  <div class="ItemCard__layer cover"></div>
+  <div class="ItemCard__summary cover">
+      <span class="ItemCard__meta category">{{recipe.name}}</span>
+      <h2 class="ItemCard__title">{{recipe.name}}</h2>
+      <address class="ItemCard__meta designer">{{recipe.description}}</address>
   </div>
-  <span class="pull-right">
-    <img class="img-responsive"
-          [src]="recipe.imagePath"
-          style="max-height: 50px;"/>
-  </span>
-</a>
+</div>

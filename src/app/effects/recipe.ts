@@ -24,19 +24,21 @@ export class RecipeEffects {
 
   @Effect() getRecipe$ = this.actions$
     .ofType(recipe.ActionTypes.GET_RECIPE)
-    .map<number>(action => action.payload)
+    .map(action => action.payload)
     .switchMap(id => this.recipeService.getRecipe(id))
     .map(recipe => this.recipeActions.getRecipeSuccess(recipe));
   
   @Effect() addRecipe$ = this.actions$
     .ofType(recipe.ActionTypes.ADD_RECIPE)
     .map<Recipe>((action) => action.payload)
+    .switchMap(recipe => this.recipeService.addRecipe(recipe))
     .map((recipe) => this.recipeActions.addRecipeSuccess(recipe))
   
   @Effect() saveRecipe$ = this.actions$
     .ofType(recipe.ActionTypes.SAVE_RECIPE)
     .map(action => action.payload)
-    .map((payload) => this.recipeActions.saveRecipeSuccess(payload.oldRecipe, payload.newRecipe))
+    .switchMap(recipe => this.recipeService.saveRecipe(recipe))
+    .map((recipes) => this.recipeActions.saveRecipeSuccess(recipes))
 
   @Effect() deleteRecipe$ = this.actions$
     .ofType(recipe.ActionTypes.DELETE_RECIPE)

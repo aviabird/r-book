@@ -6,39 +6,39 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../reducers/reducers';
 import { RecipeActions } from '../actions/recipe';
 import { Observable } from 'rxjs/Observable';
+import {AngularFire, FirebaseListObservable} from 'angularfire2';
 
 @Injectable()
 export class RecipeService {
   recipesChanged = new EventEmitter<Recipe[]>();
-
-  private recipes: Recipe[] = [];
+  db: any;
 
   constructor(
     private http: Http,
     private store: Store<AppState>,
-    private recipeActions: RecipeActions
+    private recipeActions: RecipeActions,
+    private af: AngularFire
   ) {
-    this.store.select<Recipe[]>('recipes')
-      .subscribe(recipes => this.recipes = recipes)
+    this.db = this.af.database;
   }
 
-  getRecipe(id: number) {
-    return Observable.from([this.recipes[id]])
+  getRecipe(key) {
+    return this.db.object(`recipes/${key}`);
   }
 
-  storeData() {
-    const body = JSON.stringify(this.recipes);
-    const headers = new Headers({
-      'Content-Type': 'application/json'
-    })
-    return this.http.put('https://recipebook-927d2.firebaseio.com/recipes.json', body, {
-      headers: headers
-    });
+  saveRecipe(recipe) {
+    let key = recipe.$key;
+    delete recipe['$key'];
+    this.db.object(`recipes/${key}`).set(recipe)
+    return this.db.list('recipes');
+  }
+
+  addRecipe(recipe) {
+    return this.db.list('recipes').push(recipe);
   }
 
   getRecipes() {
-    return this.http.get('https://recipebook-927d2.firebaseio.com/recipes.json')
-      .map((response: Response) => response.json())
+    return this.af.database.list('/recipes');
   }
 
 }

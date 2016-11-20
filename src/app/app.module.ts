@@ -2,11 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import {Store, StoreModule} from '@ngrx/store';
+import { Store, StoreModule } from '@ngrx/store';
 import reducers from './reducers/reducers';
-import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreLogMonitorModule, useLogMonitor } from '@ngrx/store-log-monitor';
-import {EffectsModule} from '@ngrx/effects';
+import { EffectsModule, Effect } from '@ngrx/effects';
+import { AngularFireModule } from 'angularfire2';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -25,6 +26,17 @@ import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component
 import { RecipeEffects } from './effects/recipe';
 import { RecipeService } from './recipes/recipe.service';
 import { RecipeActions } from './actions/recipe';
+import { IngredientActions } from './actions/ingredient';
+import { IngredientEffects } from './effects/ingredient';
+
+// Must export the config
+export const firebaseConfig = {
+  apiKey: "AIzaSyBHVpvBNxHymRt7BxV03WhAJtPjKNG1zuQ",
+  authDomain: "recipebook-927d2.firebaseapp.com",
+  databaseURL: "https://recipebook-927d2.firebaseio.com",
+  storageBucket: "recipebook-927d2.appspot.com",
+  messagingSenderId: "979824750533"
+};
 
 @NgModule({
   declarations: [
@@ -55,12 +67,15 @@ import { RecipeActions } from './actions/recipe';
       })
     }),
     StoreLogMonitorModule,
-    EffectsModule.run(RecipeEffects)
+    EffectsModule.run(RecipeEffects),
+    EffectsModule.run(IngredientEffects),
+    AngularFireModule.initializeApp(firebaseConfig)
   ],
   providers: [
     ShoppingListService,
     RecipeService,
-    RecipeActions
+    RecipeActions,
+    IngredientActions
   ],
   bootstrap: [AppComponent]
 })

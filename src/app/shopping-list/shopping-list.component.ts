@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ShoppingListService } from './shopping-list.service'
 import { Ingredient } from '../models/ingredient';
+import { Observable } from 'rxjs/Observable';
+import { Store } from '@ngrx/store';
+import { AppState } from '../reducers/reducers';
+import { IngredientActions } from '../actions/ingredient';
 
 @Component({
   selector: 'rb-shopping-list',
@@ -8,13 +11,18 @@ import { Ingredient } from '../models/ingredient';
   styleUrls: ['./shopping-list.component.css']
 })
 export class ShoppingListComponent implements OnInit {
-  items: Ingredient[] =[];
+  items: Observable<any>;
   selectedItem: Ingredient = null;
 
-  constructor(private sls: ShoppingListService) { }
+  constructor(
+    private store: Store<AppState>,
+    private ingredientActions: IngredientActions,
+  ) {
+    this.items = this.store.select('ingredients');
+  }
 
   ngOnInit() {
-    this.items = this.sls.getItems();
+    this.store.dispatch(this.ingredientActions.loadIngredients());
   }
 
   onSelectItem(item: Ingredient) {
