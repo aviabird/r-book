@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>RBook</title>
+  <base href="/r-book/">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <rb-root>Loading...</rb-root>
+<script type="text/javascript" src="inline.js"></script><script type="text/javascript" src="styles.5e18f5121e0dd6ee3d30.bundle.js"></script><script type="text/javascript" src="scripts.999f6548a351a21b8018.bundle.js"></script><script type="text/javascript" src="main.604e67056041831532fd.bundle.js"></script></body>
+<script type="text/javascript">
+  (function() {
+    $( document )
+      .on( "mousemove", ".ItemCard", function( event ) {
+
+      var halfW = ( this.clientWidth );
+      var halfH = ( this.clientHeight );
+
+      var coorX = ( halfW - ( event.pageX - this.offsetLeft ) );
+      var coorY = ( halfH - ( event.pageY - this.offsetTop ) );
+
+      var degX  = ( ( coorY / halfH ) * 10 ) + 'deg'; // max. degree = 10
+      var degY  = ( ( coorX / halfW ) * -10 ) + 'deg'; // max. degree = 10
+
+      $( this ).css( 'transform', function() {
+
+        return 'perspective( 600px ) translate3d( 0, -2px, 0 ) scale(1.05) rotateX('+ degX +') rotateY('+ degY +')';
+      } )
+        .children( '.ItemCard__summary' )
+        .css( 'transform', function() {
+        return 'perspective( 600px ) translate3d( 0, 0, 0 ) rotateX('+ degX +') rotateY('+ degY +')';
+      } );
+    } )
+      .on( "mouseout", ".ItemCard", function() {
+      $( this ).removeAttr( 'style' )
+        .children( '.ItemCard__summary' )
+        .removeAttr( 'style' );
+    } );
+  })();
+</script>
+</html>
