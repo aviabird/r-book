@@ -25,26 +25,24 @@ export class IngredientEffects {
   @Effect() addIngredient$ = this.actions$
     .ofType(ingredient.ActionTypes.ADD_INGREDIENT)
     .map((action) => action.payload)
+    .map(ingredient => this.shoppingListService.addIngredient(ingredient))
     .map((ingredient) => this.ingredientActions.addIngredientSuccess(ingredient))
   
    @Effect() addIngredients$ = this.actions$
     .ofType(ingredient.ActionTypes.ADD_INGREDIENTS)
     .map((action) => action.payload)
-    .map((ingredients) => this.ingredientActions.addIngredientsSuccess(ingredients))
+    .map(ingredients => this.shoppingListService.addIngredients(ingredients))
+    .map(() => this.ingredientActions.addIngredientsSuccess())
   
   @Effect() saveIngredient$ = this.actions$
     .ofType(ingredient.ActionTypes.SAVE_INGREDIENT)
     .map(action => action.payload)
-    .map(
-      (payload) => {
-        return this.ingredientActions.saveIngredientSuccess(
-          payload.oldIngredient, payload.newIngredient
-        )
-      }
-    )
+    .switchMap(payload => this.shoppingListService.saveIngredient(payload))
+    .map(() => this.ingredientActions.saveIngredientSuccess());
 
   @Effect() deleteIngredient$ = this.actions$
     .ofType(ingredient.ActionTypes.DELETE_INGREDIENT)
     .map(action => action.payload)
-    .map(id => this.ingredientActions.deleteIngredientSuccess(id));
+    .map((key) => this.shoppingListService.deleteIngredient(key))
+    .map(() => this.ingredientActions.deleteIngredientSuccess());
 }

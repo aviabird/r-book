@@ -11,14 +11,14 @@ import { IngredientActions } from '../actions/ingredient';
   styleUrls: ['./shopping-list.component.css']
 })
 export class ShoppingListComponent implements OnInit {
-  items: Observable<any>;
+  items$: Observable<any>;
   selectedItem: Ingredient = null;
 
   constructor(
     private store: Store<AppState>,
     private ingredientActions: IngredientActions,
   ) {
-    this.items = this.store.select('ingredients');
+    this.items$ = this.store.select('ingredients');
   }
 
   ngOnInit() {

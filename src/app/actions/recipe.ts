@@ -52,17 +52,16 @@ export class RecipeActions {
         };
     }
     
-    saveRecipe(recipes): Action {
+    saveRecipe(key, recipe): Action {
         return {
             type: ActionTypes.SAVE_RECIPE,
-            payload: recipes
+            payload: {key: key, recipe: recipe}
         };
     }
     
-    saveRecipeSuccess(recipes): Action {
+    saveRecipeSuccess(): Action {
         return {
-            type: ActionTypes.SAVE_RECIPE_SUCCESS,
-            payload: recipes
+            type: ActionTypes.SAVE_RECIPE_SUCCESS
         };
     }
     
@@ -73,24 +72,22 @@ export class RecipeActions {
         };
     }
     
-    addRecipeSuccess(recipe): Action {
+    addRecipeSuccess(): Action {
         return {
-            type: ActionTypes.ADD_RECIPE_SUCCESS,
-            payload: recipe
+            type: ActionTypes.ADD_RECIPE_SUCCESS
         };
     }
     
-    deleteRecipe(id): Action {
+    deleteRecipe(key): Action {
         return {
             type: ActionTypes.DELETE_RECIPE,
-            payload: id
+            payload: key
         };
     }
 
-    deleteRecipeSuccess(id): Action {
+    deleteRecipeSuccess(): Action {
         return {
-            type: ActionTypes.DELETE_RECIPE_SUCCESS,
-            payload: id
+            type: ActionTypes.DELETE_RECIPE_SUCCESS
         };
     }
 }

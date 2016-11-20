@@ -17,8 +17,4 @@ export class HeaderComponent {
     private recipeActions: RecipeActions
   ) { };
 
-  onFetch() {
-    this.store.dispatch(this.recipeActions.loadRecipes())
-  }
-
 }

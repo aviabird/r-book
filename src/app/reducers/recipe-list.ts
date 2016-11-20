@@ -14,13 +14,13 @@ export default function (state = initialState, action: Action): RecipeListState 
             return action.payload;
         }
         case ActionTypes.ADD_RECIPE_SUCCESS: {
-            return [...state, action.payload];
+            return state
         }
         case ActionTypes.SAVE_RECIPE_SUCCESS: {
-            return action.payload
+            return state
         }
         case ActionTypes.DELETE_RECIPE_SUCCESS: {
-            return state.filter((recipe, index) => index != action.payload);
+            return state
         }
         default: {
             return state;

@@ -54,17 +54,16 @@ export class IngredientActions {
         };
     }
     
-    saveIngredient(oldIngredient, newIngredient): Action {
+    saveIngredient(key, ingredient): Action {
         return {
             type: ActionTypes.SAVE_INGREDIENT,
-            payload: {oldIngredient: oldIngredient, newIngredient: newIngredient}
+            payload: {key: key, ingredient: ingredient}
         };
     }
     
-    saveIngredientSuccess(oldIngredient, newIngredient): Action {
+    saveIngredientSuccess(): Action {
         return {
-            type: ActionTypes.SAVE_INGREDIENT_SUCCESS,
-            payload: {oldIngredient: oldIngredient, newIngredient: newIngredient}
+            type: ActionTypes.SAVE_INGREDIENT_SUCCESS
         };
     }
     
@@ -89,10 +88,9 @@ export class IngredientActions {
         };
     }
     
-    addIngredientsSuccess(ingredients): Action {
+    addIngredientsSuccess(): Action {
         return {
-            type: ActionTypes.ADD_INGREDIENTS_SUCCESS,
-            payload: ingredients
+            type: ActionTypes.ADD_INGREDIENTS_SUCCESS
         };
     }
     
@@ -103,10 +101,9 @@ export class IngredientActions {
         };
     }
 
-    deleteIngredientSuccess(id): Action {
+    deleteIngredientSuccess(): Action {
         return {
-            type: ActionTypes.DELETE_INGREDIENT_SUCCESS,
-            payload: id
+            type: ActionTypes.DELETE_INGREDIENT_SUCCESS
         };
     }
 }

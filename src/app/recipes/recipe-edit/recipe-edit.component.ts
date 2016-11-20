@@ -16,7 +16,7 @@ import { RecipeActions } from '../../actions/recipe';
 })
 export class RecipeEditComponent implements OnInit, OnDestroy {
   recipeForm: FormGroup;
-  private recipeIndex: number;
+  private recipeIndex: string;
   private recipe: Recipe;
   private subscription: Subscription;
   private isNew = true;
@@ -37,7 +37,7 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription = this.route.params.subscribe(
       (params: any) => {
-        this.recipeIndex = +params['id'];
+        this.recipeIndex = params['id'];
         this.store.dispatch(this.recipeActions.getRecipe(this.recipeIndex));
         if (params.hasOwnProperty('id')) {
           this.isNew = false;
@@ -58,10 +58,11 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     const newRecipe = this.recipeForm.value;
     if (this.isNew) {
       this.store.dispatch(this.recipeActions.addRecipe(newRecipe));
+      this.navigateBack();
     } else {
-      this.store.dispatch(this.recipeActions.saveRecipe(newRecipe));
+      this.store.dispatch(this.recipeActions.saveRecipe(this.recipeIndex, newRecipe));
+      this.router.navigate(['recipes', this.recipeIndex])
     }
-    this.navigateBack();
   }
 
   onCancel() {

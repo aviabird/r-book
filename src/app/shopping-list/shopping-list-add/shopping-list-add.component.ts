@@ -13,7 +13,7 @@ import { IngredientActions } from '../../actions/ingredient';
   outputs: ['cleared']
 })
 export class ShoppingListAddComponent implements OnChanges {
-  item: Ingredient;
+  item: any;
   isAdd: boolean = true;
   cleared = new EventEmitter();
 
@@ -38,11 +38,12 @@ export class ShoppingListAddComponent implements OnChanges {
   onSubmit(ingredient: Ingredient) {
     const newIngredient = new Ingredient(ingredient.name, ingredient.amount);
     if (!this.isAdd) {
-      this.store.dispatch(this.ingredientActions.saveIngredient(this.item, newIngredient));
+      this.store.dispatch(this.ingredientActions.saveIngredient(this.item.$key, newIngredient));
     } else {
       this.item = newIngredient
       this.store.dispatch(this.ingredientActions.addIngredient(this.item));
     }
+    this.onClear();
   }
 
   onDelete() {

@@ -10,7 +10,6 @@ import {AngularFire, FirebaseListObservable} from 'angularfire2';
 
 @Injectable()
 export class RecipeService {
-  recipesChanged = new EventEmitter<Recipe[]>();
   db: any;
 
   constructor(
@@ -26,15 +25,16 @@ export class RecipeService {
     return this.db.object(`recipes/${key}`);
   }
 
-  saveRecipe(recipe) {
-    let key = recipe.$key;
-    delete recipe['$key'];
-    this.db.object(`recipes/${key}`).set(recipe)
-    return this.db.list('recipes');
+  saveRecipe(payload) {
+    return this.db.object(`recipes/${payload.key}`).set(payload.recipe);
   }
 
   addRecipe(recipe) {
     return this.db.list('recipes').push(recipe);
+  }
+
+  deleteRecipe(key) {
+    return this.db.list('recipes').remove(key);
   }
 
   getRecipes() {

@@ -32,16 +32,17 @@ export class RecipeEffects {
     .ofType(recipe.ActionTypes.ADD_RECIPE)
     .map<Recipe>((action) => action.payload)
     .switchMap(recipe => this.recipeService.addRecipe(recipe))
-    .map((recipe) => this.recipeActions.addRecipeSuccess(recipe))
+    .map(() => this.recipeActions.addRecipeSuccess())
   
   @Effect() saveRecipe$ = this.actions$
     .ofType(recipe.ActionTypes.SAVE_RECIPE)
     .map(action => action.payload)
-    .switchMap(recipe => this.recipeService.saveRecipe(recipe))
-    .map((recipes) => this.recipeActions.saveRecipeSuccess(recipes))
+    .switchMap(payload => this.recipeService.saveRecipe(payload))
+    .map(() => this.recipeActions.saveRecipeSuccess())
 
   @Effect() deleteRecipe$ = this.actions$
     .ofType(recipe.ActionTypes.DELETE_RECIPE)
-    .map<number>(action => action.payload)
-    .map(id => this.recipeActions.deleteRecipeSuccess(id));
+    .map(action => action.payload)
+    .switchMap(key => this.recipeService.deleteRecipe(key))
+    .map(() => this.recipeActions.deleteRecipeSuccess());
 }

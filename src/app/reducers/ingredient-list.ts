@@ -13,24 +13,16 @@ export default function (state = initialState, action: Action): IngredientListSt
             return action.payload;
         }
         case ActionTypes.ADD_INGREDIENT_SUCCESS: {
-            return [...state, action.payload];
+            return state;
         }
         case ActionTypes.ADD_INGREDIENTS_SUCCESS: {
-            return [...state, ...action.payload];
+            return state;
         }
         case ActionTypes.SAVE_INGREDIENT_SUCCESS: {
-            let index = state.indexOf(action.payload.oldIngredient);
-            if (index >= 0) {
-                return [
-                    ...state.slice(0, index),
-                    action.payload.newIngredient,
-                    ...state.slice(index + 1)
-                ];
-            }
             return state;
         }
         case ActionTypes.DELETE_INGREDIENT_SUCCESS: {
-            return state.filter((ingredient, index) => index != action.payload);
+            return state;
         }
         default: {
             return state;

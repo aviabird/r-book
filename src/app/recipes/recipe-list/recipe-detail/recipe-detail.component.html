@@ -2,6 +2,12 @@
   <figure class="ItemCard__thumb">
     <img src="{{(selectedRecipe | async)?.imagePath}}"  height="340" width="510" alt="" class="img-responsive">
   </figure>
+  <div class="ItemCard__layer cover"></div>
+  <div class="ItemCard__summary cover">
+      <span class="ItemCard__meta category">{{(selectedRecipe | async).name}}</span>
+      <h2 class="ItemCard__title">{{(selectedRecipe | async).name}}</h2>
+      <address class="ItemCard__meta designer">{{(selectedRecipe | async).description}}</address>
+  </div>
 </div>
 <div class="row">
   <div class="col-xs-12">
