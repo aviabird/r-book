@@ -69,16 +69,17 @@ export class RecipeEditComponent implements OnInit, OnDestroy {
     this.navigateBack();
   }
 
-  onAddItem(name: String, amount: String) {
+  onAddItem(nameEl: any, amountEl: any) {
     (<FormArray>this.recipeForm.controls['ingredients']).push(
       new FormGroup({
-        name: new FormControl(name, Validators.required),
-        amount: new FormControl(amount, [
+        name: new FormControl(nameEl.value, Validators.required),
+        amount: new FormControl(amountEl.value, [
           Validators.required,
           Validators.pattern("\\d+")
         ])
       })
     );
+    nameEl.value = amountEl.value = null;
   }
 
   onRemoveItem(index: number) {
